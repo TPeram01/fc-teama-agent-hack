@@ -1,0 +1,278 @@
+{
+    "NOTIF-2026-0001": {
+      "notification_id": "NOTIF-2026-0001",
+      "scenario_id": "e2e_test",
+      "notification_type": "new_lead_creation",
+      "first_name": "Jordan",
+      "last_name": "Lee",
+      "email": "jordan.lee@example.com",
+      "description": "New lead created from inbound client response for Jordan Lee."
+    },
+    "NOTIF-2026-0002": {
+      "notification_id": "NOTIF-2026-0002",
+      "scenario_id": "e2e_test",
+      "notification_type": "new_lead_creation",
+      "first_name": "Maria",
+      "last_name": "Santos",
+      "email": "maria.santos@example.com",
+      "description": "New lead created from website intake for Maria Santos."
+    },
+    "NOTIF-2026-0003": {
+      "notification_id": "NOTIF-2026-0003",
+      "scenario_id": "e2e_test",
+      "notification_type": "meeting_close",
+      "description": "Meeting completed and ready for follow-up summary and next-step workflow."
+    },
+    "NOTIF-2026-0201": {
+      "notification_id": "NOTIF-2026-0201",
+      "scenario_id": "e2e_test",
+      "notification_type": "new_lead_creation",
+      "first_name": "Amelia",
+      "last_name": "Carter",
+      "email": "amelia.carter@example.com",
+      "description": "New lead created from website intake for Amelia Carter."
+    },
+    "NOTIF-2026-0202": {
+      "notification_id": "NOTIF-2026-0202",
+      "scenario_id": "e2e_test",
+      "notification_type": "meeting_close",
+      "first_name": "Amelia",
+      "last_name": "Carter",
+      "email": "amelia.carter@example.com",
+      "description": "Initial discovery meeting completed and ready for follow-up outreach."
+    },
+    "NOTIF-2026-0203": {
+      "notification_id": "NOTIF-2026-0203",
+      "scenario_id": "e2e_test",
+      "notification_type": "meeting_close",
+      "first_name": "Amelia",
+      "last_name": "Carter",
+      "email": "amelia.carter@example.com",
+      "description": "Financial goals meeting completed with no remaining follow-up items."
+    },
+    "NOTIF-2026-0301": {
+      "notification_id": "NOTIF-2026-0301",
+      "scenario_id": "duplicate_lead_detection",
+      "notification_type": "new_lead_creation",
+      "first_name": "Ethan",
+      "last_name": "Brooks",
+      "email": "ethan.brooks@example.com",
+      "description": "New lead created from event intake for Ethan Brooks under a new UID that duplicates an existing lead."
+    },
+    "NOTIF-2026-0302": {
+      "notification_id": "NOTIF-2026-0302",
+      "scenario_id": "existing_client_detection",
+      "notification_type": "new_lead_creation",
+      "first_name": "Jordan",
+      "last_name": "Lee",
+      "email": "jordan.lee@example.com",
+      "description": "New lead created from website intake for Jordan Lee under a new UID that matches an existing client."
+    },
+    "NOTIF-2026-0303": {
+      "notification_id": "NOTIF-2026-0303",
+      "scenario_id": "e2e_simple_scenario",
+      "notification_type": "new_lead_creation",
+      "first_name": "Naomi",
+      "last_name": "Bennett",
+      "email": "naomi.bennett@example.com",
+      "description": "New lead created from website intake for Naomi Bennett."
+    },
+    "NOTIF-2026-0304": {
+      "notification_id": "NOTIF-2026-0304",
+      "scenario_id": "e2e_simple_scenario",
+      "notification_type": "meeting_close",
+      "first_name": "Naomi",
+      "last_name": "Bennett",
+      "email": "naomi.bennett@example.com",
+      "description": "Initial discovery meeting completed for Naomi Bennett and the next plan review meeting should be scheduled."
+    },
+    "NOTIF-2026-0305": {
+      "notification_id": "NOTIF-2026-0305",
+      "scenario_id": "e2e_simple_scenario",
+      "notification_type": "meeting_close",
+      "first_name": "Naomi",
+      "last_name": "Bennett",
+      "email": "naomi.bennett@example.com",
+      "description": "Financial plan review meeting completed for Naomi Bennett and the plan was approved."
+    },
+    "NOTIF-2026-0306": {
+      "notification_id": "NOTIF-2026-0306",
+      "scenario_id": "revision_loop_e2e",
+      "notification_type": "new_lead_creation",
+      "first_name": "Elena",
+      "last_name": "Morales",
+      "email": "elena.morales@example.com",
+      "description": "New lead created from advisor referral intake for Elena Morales."
+    },
+    "NOTIF-2026-0307": {
+      "notification_id": "NOTIF-2026-0307",
+      "scenario_id": "revision_loop_e2e",
+      "notification_type": "meeting_close",
+      "first_name": "Elena",
+      "last_name": "Morales",
+      "email": "elena.morales@example.com",
+      "description": "Initial discovery meeting completed for Elena Morales and additional intake details are still needed."
+    },
+    "NOTIF-2026-0308": {
+      "notification_id": "NOTIF-2026-0308",
+      "scenario_id": "revision_loop_e2e",
+      "notification_type": "meeting_close",
+      "first_name": "Elena",
+      "last_name": "Morales",
+      "email": "elena.morales@example.com",
+      "description": "Financial plan review meeting completed for Elena Morales and another revision meeting is required."
+    },
+    "NOTIF-2026-0309": {
+      "notification_id": "NOTIF-2026-0309",
+      "scenario_id": "revision_loop_e2e",
+      "notification_type": "meeting_close",
+      "first_name": "Elena",
+      "last_name": "Morales",
+      "email": "elena.morales@example.com",
+      "description": "Financial plan revision meeting completed for Elena Morales and the plan was accepted."
+    },
+    "NOTIF-2026-0310": {
+      "notification_id": "NOTIF-2026-0310",
+      "scenario_id": "off_topic_email_blocked",
+      "notification_type": "new_lead_creation",
+      "first_name": "Miles",
+      "last_name": "Donovan",
+      "email": "miles.donovan@example.com",
+      "description": "New lead created from website intake for Miles Donovan."
+    },
+    "NOTIF-2026-0311": {
+      "notification_id": "NOTIF-2026-0311",
+      "scenario_id": "corrupted_attachment",
+      "notification_type": "new_lead_creation",
+      "first_name": "Harper",
+      "last_name": "Nguyen",
+      "email": "harper.nguyen@example.com",
+      "description": "New lead created from website intake for Harper Nguyen."
+    },
+    "NOTIF-2026-0312": {
+      "notification_id": "NOTIF-2026-0312",
+      "scenario_id": "corrupted_attachment",
+      "notification_type": "meeting_close",
+      "first_name": "Harper",
+      "last_name": "Nguyen",
+      "email": "harper.nguyen@example.com",
+      "description": "Initial discovery meeting completed for Harper Nguyen and follow-up is needed on missing fields and a corrupted attachment."
+    },
+    "NOTIF-2026-0313": {
+      "notification_id": "NOTIF-2026-0313",
+      "scenario_id": "corrupted_attachment",
+      "notification_type": "meeting_close",
+      "first_name": "Harper",
+      "last_name": "Nguyen",
+      "email": "harper.nguyen@example.com",
+      "description": "Financial goals meeting completed for Harper Nguyen and the plan was approved."
+    },
+    "NOTIF-2026-0401": {
+      "notification_id": "NOTIF-2026-0401",
+      "scenario_id": "new_lead",
+      "notification_type": "new_lead_creation",
+      "first_name": "Cameron",
+      "last_name": "Dale",
+      "email": "cameron.dale@example.com",
+      "description": "New lead created for Cameron Dale with enough state and service context for direct advisor assignment and introductory outreach."
+    },
+    "NOTIF-2026-0405": {
+      "notification_id": "NOTIF-2026-0405",
+      "scenario_id": "meeting_close_follow_up",
+      "notification_type": "meeting_close",
+      "first_name": "Grace",
+      "last_name": "Holloway",
+      "email": "grace.holloway@example.com",
+      "description": "Discovery meeting completed for Grace Holloway and a combined follow-up is needed for missing Form 1500 items and the next planning meeting."
+    },
+    "NOTIF-2026-0407": {
+      "notification_id": "NOTIF-2026-0407",
+      "scenario_id": "new_lead_remote_fallback",
+      "notification_type": "new_lead_creation",
+      "first_name": "Owen",
+      "last_name": "Fields",
+      "email": "owen.fields@example.com",
+      "description": "New lead created for Owen Fields in a state with no local advisors, requiring remote fallback and human approval."
+    },
+    "NOTIF-2026-0408": {
+      "notification_id": "NOTIF-2026-0408",
+      "scenario_id": "new_lead_missing_location",
+      "notification_type": "new_lead_creation",
+      "first_name": "Nora",
+      "last_name": "Bishop",
+      "email": "nora.bishop@example.com",
+      "description": "New lead created for Nora Bishop without city or state data, requiring explicit remote routing and human approval."
+    },
+    "NOTIF-2026-0409": {
+      "notification_id": "NOTIF-2026-0409",
+      "scenario_id": "financial_plan_approval",
+      "notification_type": "meeting_close",
+      "first_name": "Daniel",
+      "last_name": "Wu",
+      "email": "daniel.wu@example.com",
+      "description": "Financial plan review completed for Daniel Wu and the plan was approved, so only final sendoff outreach is needed."
+    },
+    "NOTIF-2026-0502": {
+      "notification_id": "NOTIF-2026-0502",
+      "scenario_id": "same_case_multi_event_resume",
+      "notification_type": "new_lead_creation",
+      "first_name": "Lila",
+      "last_name": "Harmon",
+      "email": "lila.harmon@example.com",
+      "description": "New lead created for Lila Harmon, starting a multi-event case that should retain context across later workflow steps."
+    },
+    "NOTIF-2026-0503": {
+      "notification_id": "NOTIF-2026-0503",
+      "scenario_id": "same_case_multi_event_resume",
+      "notification_type": "meeting_close",
+      "first_name": "Lila",
+      "last_name": "Harmon",
+      "email": "lila.harmon@example.com",
+      "description": "Initial discovery meeting completed for Lila Harmon and the next follow-up should continue the same case context."
+    },
+    "NOTIF-2026-0504": {
+      "notification_id": "NOTIF-2026-0504",
+      "scenario_id": "interleaved_case_session_isolation",
+      "notification_type": "new_lead_creation",
+      "first_name": "Sofia",
+      "last_name": "Patel",
+      "email": "sofia.patel@example.com",
+      "description": "New lead created for Sofia Patel in the first of two interleaved cases."
+    },
+    "NOTIF-2026-0505": {
+      "notification_id": "NOTIF-2026-0505",
+      "scenario_id": "interleaved_case_session_isolation",
+      "notification_type": "new_lead_creation",
+      "first_name": "Julian",
+      "last_name": "Pierce",
+      "email": "julian.pierce@example.com",
+      "description": "New lead created for Julian Pierce in the second of two interleaved cases."
+    },
+    "NOTIF-2026-0506": {
+      "notification_id": "NOTIF-2026-0506",
+      "scenario_id": "interleaved_case_session_isolation",
+      "notification_type": "meeting_close",
+      "first_name": "Sofia",
+      "last_name": "Patel",
+      "email": "sofia.patel@example.com",
+      "description": "Initial discovery meeting completed for Sofia Patel and the workflow should keep her follow-up separate from the other active case."
+    },
+    "NOTIF-2026-0507": {
+      "notification_id": "NOTIF-2026-0507",
+      "scenario_id": "interleaved_case_session_isolation",
+      "notification_type": "meeting_close",
+      "first_name": "Julian",
+      "last_name": "Pierce",
+      "email": "julian.pierce@example.com",
+      "description": "Initial discovery meeting completed for Julian Pierce and the workflow should keep his follow-up separate from the other active case."
+    },
+    "NOTIF-2026-0508": {
+      "notification_id": "NOTIF-2026-0508",
+      "scenario_id": "manual_review_queue_remote_fallback",
+      "notification_type": "new_lead_creation",
+      "first_name": "Rachel",
+      "last_name": "Sutton",
+      "email": "rachel.sutton@example.com",
+      "description": "New lead created for Rachel Sutton in a state with no local advisors, so remote fallback approval should be queued for manual review."
+    }
+  }

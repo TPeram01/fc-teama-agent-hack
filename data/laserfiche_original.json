@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Mock Laserfiche repository for compliance uploads."
+  },
+  "UID-2026-0001": [
+    "data/sample_input/Jordan_Lee_Account_Summary.pdf"
+  ]
+}

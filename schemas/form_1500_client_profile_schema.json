@@ -1,0 +1,216 @@
+{
+  "metadata": {
+    "name": "Form 1500 Client Profile Schema",
+    "status": "simplified_template",
+    "source_form": "Form 1500",
+    "source_notes": [
+      "This schema is intentionally simplified to a flat intake profile with 25 core fields.",
+      "Sections were removed to keep extraction and downstream form-filling lightweight.",
+      "Replace or refine these fields after the official Form 1500 is available."
+    ]
+  },
+  "fields": [
+    {
+      "key": "first_name",
+      "label": "First Name",
+      "type": "string",
+      "required": true,
+      "description": "Client legal first name."
+    },
+    {
+      "key": "last_name",
+      "label": "Last Name",
+      "type": "string",
+      "required": true,
+      "description": "Client legal last name."
+    },
+    {
+      "key": "date_of_birth",
+      "label": "Date Of Birth",
+      "type": "date",
+      "required": true,
+      "description": "Client date of birth."
+    },
+    {
+      "key": "marital_status",
+      "label": "Marital Status",
+      "type": "string",
+      "required": false,
+      "description": "Current marital status relevant to planning."
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "type": "string",
+      "required": true,
+      "description": "Primary email address."
+    },
+    {
+      "key": "mobile_phone",
+      "label": "Mobile Phone",
+      "type": "string",
+      "required": false,
+      "description": "Primary phone number."
+    },
+    {
+      "key": "city",
+      "label": "City",
+      "type": "string",
+      "required": false,
+      "description": "Residential city."
+    },
+    {
+      "key": "state",
+      "label": "State",
+      "type": "string",
+      "required": false,
+      "description": "Residential state."
+    },
+    {
+      "key": "service_affiliation",
+      "label": "Service Affiliation",
+      "type": "string",
+      "required": false,
+      "description": "Military, veteran, civilian, or surviving spouse affiliation."
+    },
+    {
+      "key": "branch_of_service",
+      "label": "Branch Of Service",
+      "type": "string",
+      "required": false,
+      "description": "Army, Navy, Air Force, Marine Corps, Space Force, Coast Guard, or other."
+    },
+    {
+      "key": "military_status",
+      "label": "Military Status",
+      "type": "string",
+      "required": false,
+      "description": "Active duty, reserve, guard, retired, separated, or veteran."
+    },
+    {
+      "key": "rank_or_pay_grade",
+      "label": "Rank Or Pay Grade",
+      "type": "string",
+      "required": false,
+      "description": "Current or most recent rank or pay grade."
+    },
+    {
+      "key": "projected_retirement_date",
+      "label": "Projected Retirement Date",
+      "type": "date",
+      "required": false,
+      "description": "Expected retirement or separation date."
+    },
+    {
+      "key": "spouse_name",
+      "label": "Spouse Name",
+      "type": "string",
+      "required": false,
+      "description": "Spouse or partner full name."
+    },
+    {
+      "key": "dependents_count",
+      "label": "Dependents Count",
+      "type": "number",
+      "required": false,
+      "description": "Number of dependents relevant to planning."
+    },
+    {
+      "key": "primary_goal",
+      "label": "Primary Goal",
+      "type": "string",
+      "required": false,
+      "description": "Main financial planning objective."
+    },
+    {
+      "key": "annual_household_income",
+      "label": "Annual Household Income",
+      "type": "number",
+      "required": false,
+      "description": "Estimated total annual household income."
+    },
+    {
+      "key": "monthly_expenses",
+      "label": "Monthly Expenses",
+      "type": "number",
+      "required": false,
+      "description": "Estimated monthly household expenses."
+    },
+    {
+      "key": "liquid_cash",
+      "label": "Liquid Cash",
+      "type": "number",
+      "required": false,
+      "description": "Cash held in checking, savings, or similar accounts."
+    },
+    {
+      "key": "retirement_account_balance",
+      "label": "Retirement Account Balance",
+      "type": "number",
+      "required": false,
+      "description": "Combined retirement account balances, including TSP, IRA, and employer plans."
+    },
+    {
+      "key": "total_debt_balance",
+      "label": "Total Debt Balance",
+      "type": "number",
+      "required": false,
+      "description": "Estimated total outstanding debt across mortgages, loans, and cards."
+    },
+    {
+      "key": "risk_tolerance",
+      "label": "Risk Tolerance",
+      "type": "string",
+      "required": false,
+      "description": "Conservative, moderate, aggressive, or similar profile."
+    },
+    {
+      "key": "life_insurance_coverage",
+      "label": "Life Insurance Coverage",
+      "type": "number",
+      "required": false,
+      "description": "Total life insurance death benefit coverage."
+    },
+    {
+      "key": "estate_documents_in_place",
+      "label": "Estate Documents In Place",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether core estate documents such as a will or powers of attorney are in place."
+    },
+    {
+      "key": "planning_notes",
+      "label": "Planning Notes",
+      "type": "string",
+      "required": false,
+      "description": "Freeform notes for anything material not captured elsewhere."
+    }
+  ],
+  "blank_profile": {
+    "first_name": null,
+    "last_name": null,
+    "date_of_birth": null,
+    "marital_status": null,
+    "email": null,
+    "mobile_phone": null,
+    "city": null,
+    "state": null,
+    "service_affiliation": null,
+    "branch_of_service": null,
+    "military_status": null,
+    "rank_or_pay_grade": null,
+    "projected_retirement_date": null,
+    "spouse_name": null,
+    "dependents_count": null,
+    "primary_goal": null,
+    "annual_household_income": null,
+    "monthly_expenses": null,
+    "liquid_cash": null,
+    "retirement_account_balance": null,
+    "total_debt_balance": null,
+    "risk_tolerance": null,
+    "life_insurance_coverage": null,
+    "estate_documents_in_place": null,
+    "planning_notes": null
+  }
+}

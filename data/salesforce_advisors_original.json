@@ -1,0 +1,98 @@
+{
+    "ADV-1001": {
+      "advisor_id": "ADV-1001",
+      "advisor_name": "Alex Morgan",
+      "skills": [
+        "retirement_planning",
+        "military_benefits",
+        "portfolio_review"
+      ],
+      "branch_type": "remote",
+      "state": "AZ",
+      "available_blocks": [
+        "2026-04-07T16:00:00Z",
+        "2026-04-07T18:00:00Z",
+        "2026-04-09T17:30:00Z"
+      ]
+    },
+    "ADV-1002": {
+      "advisor_id": "ADV-1002",
+      "advisor_name": "Priya Shah",
+      "skills": [
+        "estate_planning",
+        "insurance_review",
+        "family_financial_planning"
+      ],
+      "branch_type": "in_person",
+      "state": "TX",
+      "available_blocks": [
+        "2026-04-06T15:00:00Z",
+        "2026-04-08T20:00:00Z",
+        "2026-04-10T14:30:00Z"
+      ]
+    },
+    "ADV-1003": {
+      "advisor_id": "ADV-1003",
+      "advisor_name": "Noah Kim",
+      "skills": [
+        "tax_planning",
+        "cash_flow_analysis",
+        "new_client_intake"
+      ],
+      "branch_type": "remote",
+      "state": "CA",
+      "available_blocks": [
+        "2026-04-07T19:00:00Z",
+        "2026-04-08T16:30:00Z",
+        "2026-04-09T21:00:00Z"
+      ]
+    },
+    "ADV-1004": {
+      "advisor_id": "ADV-1004",
+      "advisor_name": "Sofia Alvarez",
+      "skills": [
+        "retirement_income",
+        "education_planning",
+        "military_benefits"
+      ],
+      "branch_type": "in_person",
+      "state": "TX",
+      "available_blocks": [
+        "2026-04-07T18:00:00Z",
+        "2026-04-08T19:30:00Z",
+        "2026-04-10T16:00:00Z"
+      ]
+    },
+    "ADV-1005": {
+      "advisor_id": "ADV-1005",
+      "advisor_name": "Marcus Chen",
+      "skills": [
+        "family_financial_planning",
+        "insurance_review",
+        "cash_flow_analysis"
+      ],
+      "branch_type": "remote",
+      "state": "TX",
+      "available_blocks": [
+        "2026-04-06T20:00:00Z",
+        "2026-04-09T15:00:00Z",
+        "2026-04-13T18:30:00Z"
+      ]
+    },
+    "ADV-1006": {
+      "advisor_id": "ADV-1006",
+      "advisor_name": "Rachel Thompson",
+      "skills": [
+        "estate_planning",
+        "tax_planning",
+        "new_client_intake"
+      ],
+      "branch_type": "in_person",
+      "state": "TX",
+      "available_blocks": [
+        "2026-04-08T15:30:00Z",
+        "2026-04-10T19:00:00Z",
+        "2026-04-14T17:00:00Z"
+      ]
+    }
+  }
