@@ -78,7 +78,7 @@ uv sync
 3. If you want to restore the mock runtime state manually, run:
 
 ```bash
-uv run python scripts/reset_runtime_data.py
+uv run scripts/reset_runtime_data.py
 ```
 
 Note: `main.py` restores the top-level runtime JSON files in `data/` from their `*_original.json` copies on startup. Because `api.py` imports `main.py`, starting the API also resets that runtime state.
@@ -88,25 +88,25 @@ Note: `main.py` restores the top-level runtime JSON files in `data/` from their 
 List the available scenarios:
 
 ```bash
-uv run python main.py --list-scenarios
+uv run main.py --list-scenarios
 ```
 
 Run the default end-to-end scenario:
 
 ```bash
-uv run python main.py --scenario e2e_test
+uv run main.py --scenario e2e_test
 ```
 
 Run a different predefined scenario:
 
 ```bash
-uv run python main.py --scenario corrupted_attachment
+uv run main.py --scenario corrupted_attachment
 ```
 
 Run a custom payload JSON:
 
 ```bash
-uv run python main.py --payload path/to/payload.json
+uv run main.py --payload path/to/payload.json
 ```
 
 
