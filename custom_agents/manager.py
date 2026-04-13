@@ -2,6 +2,9 @@ from typing import Annotated, Literal
 
 from agents import Agent, ModelSettings, RunHooks
 from pydantic import BaseModel, Field
+from .lead_reviewer import lead_reviewer_agent
+from .infotrack import infotrack_agent
+from .response_ingestion import response_ingestion_agent
 
 MANAGER_AGENT_PROMPT = """
 Persona:
@@ -13,6 +16,25 @@ Goal:
 Review each incoming workflow notification and determine the correct next action so the
 end-to-client flow moves smoothly from lead intake through qualification, information
 collection, meeting scheduling, and compliance-document handling.
+
+
+
+* steps for lead_reviewer
+When a playload arrives with type of 
+-salesforce_notification and the trigger type is new_lead, then use agent lead_reviewer as a tool first them use Infotracking.
+
+
+* steps for Infotracking
+When a playload arrived with type of
+- salesforce_notification and the meeting is closed, use agent infotrack_agent as a tool.
+
+
+* steps for response ingestion
+When a playload arrived with type of 
+- inbound email, use response_ingestion_agent as a tool.
+
+
+
 """.strip()
 # TODO: Rewrite Manager Agent Prompt
 # - Provide context for supported workflows, triggers, high-level scenarios
@@ -61,6 +83,22 @@ def make_manager_agent(hooks: RunHooks | None = None) -> Agent:
         model="gpt-5.4", # TODO: update approriate model for response ingestion
         model_settings=ModelSettings(tool_choice="auto", parallel_tool_calls=False),
         tools=[ # TODO 
+            
+        lead_reviewer_agent.as_tool(
+            tool_name="lead_reviewer_agent",
+            tool_description=LEAD_REVIEWER_TOOL_PROMPT
+        ),
+
+        infotrack_agent.as_tool(
+            tool_name="infotrack_agent",
+            tool_description=INFOTRACK_TOOL_PROMPT
+        ),
+
+        response_ingestion_agent.as_tool(
+            tool_name="response_ingestion_agent",
+            tool_description=RESPONSE_INGESTION_TOOL_PROMPT
+        ),
+
         ],
         output_type=ManagerOutput,
         input_guardrails=[],
