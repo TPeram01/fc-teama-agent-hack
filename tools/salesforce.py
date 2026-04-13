@@ -1222,6 +1222,7 @@ def salesforce_lead_db_get_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_lead_retrieval_tool(
     uid: Annotated[
         str,
@@ -1637,6 +1638,7 @@ def salesforce_advisor_assignment_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_delete_lead_tool(
     uid: Annotated[
         str,
