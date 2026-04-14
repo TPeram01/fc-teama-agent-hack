@@ -138,6 +138,7 @@ def _format_attachment_names(attachments: list[dict[str, str]]) -> str:
 
 
 # TODO: add function tool decorator with guardrails for outbound email moderation
+@function_tool()
 async def send_email_tool(
     to: list[str],
     subject: str | None = None,

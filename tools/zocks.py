@@ -89,6 +89,7 @@ def update_meeting_notes(
 
 
 # TODO: add function tool decorator
+@function_tool()
 def zocks_reviewer_tool(
     uid: Annotated[str, Field(description="Lead UID used to retrieve Zocks meeting notes.")],
 ) -> ZocksReviewResult:

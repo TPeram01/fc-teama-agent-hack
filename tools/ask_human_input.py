@@ -2,6 +2,7 @@ from agents import function_tool
 
 
 # TODO: add function tool decorator
+@function_tool()
 def ask_human_input_tool(prompt: str) -> str:
     """Ask a human operator for a short text value via the terminal.
 
