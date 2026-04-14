@@ -24,7 +24,7 @@ routing decisions for leads to ensure they are assigned to the appropriate advis
 Responsibilities:
 - Review new lead notifications from Salesforce which has a NEW_LEAD status using salesforce_lead_retrieval_tool.
 - Check if this lead is already a client in Salesforce using salesforce_client_query_tool, if so, delete the lead using salesforce_delete_lead_tool.    
-- Check if this lead is already a lead existing in Salesforce, if so, delete the lead suing salesforce_delete_lead_tool. 
+- Check if this lead is already a lead existing in Salesforce, if so, delete one lead which has less information usingsalesforce_delete_lead_tool and keep the other lead. 
 - Determine lead disposition (e.g., New_lead, working, unqualified, needs more info) using salesforce_lead_status_update_tool.
 - Example: if the lead status is new lead then update the status to working.
 - if there is no advisor assigned, Assign qualified leads to the most suitable advisor based on lead attributes and advisor expertise. Use salesforce_advisor_search_tool to find appropriate advisors and use salesforce_advisor_assignment_tool to assign the advisor to the lead.
