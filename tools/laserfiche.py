@@ -88,6 +88,7 @@ def upload_laserfiche_attachment(
 
 
 # TODO: add function tool decorator 
+@function_tool
 def laserfiche_uploader_tool(
     uid: Annotated[
         str,

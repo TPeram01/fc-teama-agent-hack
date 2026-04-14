@@ -455,6 +455,7 @@ def _add_usage_to_context(ctx: ToolContext, usage: Usage | None) -> None:
     )
 
 # TODO: add function tool decorator with appropriate guardrails (including compliance assessment)
+@function_tool()
 def document_processor_tool(
     ctx: ToolContext,
     attachments: Annotated[list[ReceivedAttachment], Field(description="Attachments to load from the inbound email.")],

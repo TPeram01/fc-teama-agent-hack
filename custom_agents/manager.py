@@ -61,17 +61,65 @@ class ManagerOutput(BaseModel):
         Field(description="Overall manager execution status for this event."),
     ]
     # TODO: Add `summary` for a short outcome summary for this event
+    summary: Annotated[
+        str | None,
+        Field(description="Short outcome summary for this event."),
+    ] = None
     # TODO: Add `trigger_type` for the routing modality inferred from payload content/context, not from a required hard-coded label
+    trigger_type: Annotated[
+        str | None,
+        Field(description="Routing modality inferred from payload content and context."),
+    ] = None
     # TODO: Add `email_type` for a backward-compatible field mirroring classification-style labels when applicable
+    email_type: Annotated[
+        str | None,
+        Field(description="Backward-compatible field mirroring classification-style labels when applicable."),
+    ] = None
     # TODO: Add `uid` for the primary UID used for routing when available
+    uid: Annotated[
+        str | None,
+        Field(description="Primary UID used for routing when available."),
+    ] = None
     # TODO: Add `duplicate_suppressed` for whether this event was suppressed as duplicate
+    duplicate_suppressed: Annotated[
+        bool,
+        Field(description="Whether this event was suppressed as duplicate."),
+    ] = False
     # TODO: Add `called_agents` for tracking specialist agents that were invoked for this event
+    called_agents: Annotated[
+        list[str],
+        Field(description="Specialist agents invoked for this event."),
+    ] = []
     # TODO: Add `routing_decisions` for audit-log style routing and suppression decisions
+    routing_decisions: Annotated[
+        list[str],
+        Field(description="Audit-log style routing and suppression decisions."),
+    ] = []
     # TODO: Add `actions` for tracking primary actions taken by the manager in this run
+    actions: Annotated[
+        list[str],
+        Field(description="Primary actions taken by the manager in this run."),
+    ] = []
     # TODO: Add `next_actions` for suggested next trigger(s) or follow-up actions
+    next_actions: Annotated[
+        list[str],
+        Field(description="Suggested next triggers or follow-up actions."),
+    ] = []
     # TODO: Add `gaps` for noting missing fields, unresolved UID issues, or blocked conditions
+    gaps: Annotated[
+        list[str],
+        Field(description="Missing fields, unresolved UID issues, or blocked conditions."),
+    ] = []
     # TODO: Add `escalation_summary` for a concise escalation message when human follow-up is required
+    escalation_summary: Annotated[
+        str | None,
+        Field(description="Concise escalation message when human follow-up is required."),
+    ] = None
     # TODO: Add `confidence` for the overall routing and orchestration decision confidence score
+    confidence: Annotated[
+        float | None,
+        Field(description="Overall routing and orchestration decision confidence score."),
+    ] = None
 
 
 def make_manager_agent(hooks: RunHooks | None = None) -> Agent:

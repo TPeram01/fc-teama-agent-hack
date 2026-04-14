@@ -36,20 +36,118 @@ class InfoTrackOutput(BaseModel):
         Literal["completed", "partial", "failed"],
         Field(description="Overall InfoTrack workflow status."),
     ]
-    # TODO: Add `scenario` for the scenario classification for the current prospect or client
-    # TODO: Add `lead_or_client_id` for the Salesforce lead or client identifier when available
-    # TODO: Add `meeting_required` for whether scheduling outreach is required in this run
-    # TODO: Add `meeting_time_options` for advisor-validated meeting time options included in outreach
-    # TODO: Add `meeting_times_source_validated` for whether all listed meeting options came directly from advisor calendar availability
-    # TODO: Add `missing_information_requests` for missing data requested from the client, including Form 1500 and goal-related items when applicable
-    # TODO: Add `zocks_action_items` for relevant follow-up items identified from Zocks review
-    # TODO: Add `email_sent` for whether client outreach email was sent
-    # TODO: Add `email_summary` for a brief summary of outreach content sent to the client
-    # TODO: Add `actions_taken` for tracking ordered actions completed during this workflow run
-    # TODO: Add `gaps` for noting missing fields, contradictory Salesforce data, or non-blocking constraints
-    # TODO: Add `escalation_required` for whether human intervention is required
-    # TODO: Add `escalation_summary` for a concise handoff note when the workflow is blocked
-    # TODO: Add `confidence` for the final scenario and outreach decision confidence score
+
+    scenario: Annotated[
+        str,
+        Field(
+            min_length=1,
+            description="Scenario classification for the current prospect or client.",
+        ),
+    ]
+    lead_or_client_id: Annotated[
+        str | None,
+        Field(
+            default=None,
+            description="Salesforce lead or client identifier when available.",
+        ),
+    ]
+    meeting_required: Annotated[
+        bool,
+        Field(
+            description="Whether scheduling outreach is required in this workflow run.",
+        ),
+    ]
+    meeting_time_options: Annotated[
+        list[str],
+        Field(
+            default_factory=list,
+            description="Advisor-validated meeting time options included in client outreach.",
+        ),
+    ]
+    meeting_times_source_validated: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether all listed meeting options came directly from advisor "
+                "calendar availability."
+            ),
+        ),
+    ]
+    missing_information_requests: Annotated[
+        list[str],
+        Field(
+            default_factory=list,
+            description=(
+                "Ordered list of missing information requested from the client, "
+                "including Form 1500 and goal-related items when applicable."
+            ),
+        ),
+    ]
+    zocks_action_items: Annotated[
+        list[str],
+        Field(
+            default_factory=list,
+            description=(
+                "Relevant follow-up items identified from the Zocks review that "
+                "should be tracked or included in client outreach."
+            ),
+        ),
+    ]
+    email_sent: Annotated[
+        bool,
+        Field(description="Whether a client outreach email was sent during this workflow run."),
+    ]
+    email_summary: Annotated[
+        str | None,
+        Field(
+            default=None,
+            description="Brief summary of the outreach content sent to the client.",
+        ),
+    ]
+    actions_taken: Annotated[
+        list[str],
+        Field(
+            default_factory=list,
+            description=(
+                "Ordered list of workflow actions completed during this InfoTrack "
+                "run."
+            ),
+        ),
+    ]
+    gaps: Annotated[
+        list[str],
+        Field(
+            default_factory=list,
+            description=(
+                "Ordered list of missing fields, contradictory Salesforce details, "
+                "or non-blocking constraints identified during review."
+            ),
+        ),
+    ]
+    escalation_required: Annotated[
+        bool,
+        Field(
+            description="Whether human intervention is required to complete this workflow run.",
+        ),
+    ]
+    escalation_summary: Annotated[
+        str | None,
+        Field(
+            default=None,
+            description=(
+                "Concise handoff note summarizing the blocking issue when the "
+                "workflow is blocked."
+            ),
+        ),
+    ]
+    confidence: Annotated[
+        float,
+        Field(
+            ge=0,
+            le=1,
+            description="Confidence score for the final scenario and outreach decision.",
+        ),
+    ]
 
 
 def make_infotrack_agent(hooks: RunHooks | None = None) -> Agent:
