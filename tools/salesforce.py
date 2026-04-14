@@ -1109,6 +1109,7 @@ def salesforce_client_db_set_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_client_query_tool(
     uid: Annotated[
         str,
@@ -1155,6 +1156,7 @@ def salesforce_client_query_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_client_information_tool(
     uid: Annotated[
         str,
@@ -1192,6 +1194,7 @@ def salesforce_client_information_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_lead_db_get_tool(
     uid: Annotated[
         str,
@@ -1257,6 +1260,7 @@ def salesforce_lead_retrieval_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_lead_db_set_tool(
     uid: Annotated[
         str,
@@ -1285,6 +1289,7 @@ def salesforce_lead_db_set_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_lead_status_update_tool(
     uid: Annotated[
         str,
@@ -1339,6 +1344,7 @@ def salesforce_lead_status_update_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_client_input_tool(
     uid: Annotated[
         str,
@@ -1364,6 +1370,7 @@ def salesforce_client_input_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def meeting_scheduler_tool(
     uid: Annotated[
         str,
@@ -1392,6 +1399,7 @@ def meeting_scheduler_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_document_uploader_tool(
     uid: Annotated[
         str,
@@ -1415,6 +1423,7 @@ def salesforce_document_uploader_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_lead_query_tool(
     uid: Annotated[
         str,
@@ -1459,6 +1468,7 @@ def salesforce_lead_query_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_advisor_db_get_tool(
     advisor_id: Annotated[
         str,
@@ -1491,6 +1501,7 @@ def salesforce_advisor_db_get_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_advisor_search_tool(
     state: Annotated[
         str,
@@ -1559,6 +1570,7 @@ def salesforce_advisor_search_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def advisor_calendar_tool(
     uid: Annotated[
         str,
@@ -1577,6 +1589,7 @@ def advisor_calendar_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_advisor_assignment_tool(
     uid: Annotated[
         str,
@@ -1676,6 +1689,7 @@ salesforce_lead_delete_tool = salesforce_delete_lead_tool
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_advisor_db_set_tool(
     advisor_id: Annotated[
         str,
@@ -1704,6 +1718,7 @@ def salesforce_advisor_db_set_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_notification_db_get_tool(
     notification_id: Annotated[
         str,
@@ -1736,6 +1751,7 @@ def salesforce_notification_db_get_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_notification_db_set_tool(
     notification_id: Annotated[
         str,
