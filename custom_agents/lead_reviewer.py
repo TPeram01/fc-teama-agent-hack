@@ -2,9 +2,9 @@ from typing import Annotated, Literal
 
 from agents import Agent, ModelSettings, RunHooks
 from pydantic import BaseModel, Field
-from tools.salesforce import salesforce_lead_query_tool # To check if the lead is duplicate
 from tools.salesforce import salesforce_lead_retrieval_tool #Retrive all leads current informaiton
-from tools.salesforce import salesforce_lead_delete_tool # To delete the lead if it is duplicate or a client
+from tools.salesforce import salesforce_lead_query_tool # To check if the lead is duplicate
+from tools.salesforce import salesforce_delete_lead_tool # To delete the lead if it is duplicate or a client
 from tools.salesforce import salesforce_advisor_db_get_tool   
 from tools.salesforce import salesforce_lead_status_update_tool
 from tools.salesforce import salesforce_advisor_search_tool

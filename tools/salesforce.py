@@ -1045,6 +1045,7 @@ def set_salesforce_notification(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_client_db_get_tool(
     uid: Annotated[
         str,
@@ -1077,6 +1078,7 @@ def salesforce_client_db_get_tool(
 
 
 # TODO: add function tool decorator
+@function_tool
 def salesforce_client_db_set_tool(
     uid: Annotated[
         str,
