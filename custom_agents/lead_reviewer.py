@@ -2,16 +2,49 @@ from typing import Annotated, Literal
 
 from agents import Agent, ModelSettings, RunHooks
 from pydantic import BaseModel, Field
+from tools.salesforce import salesforce_lead_retrieval_tool #Retrive all leads current informaiton
+from tools.salesforce import salesforce_lead_query_tool # To check if the lead is duplicate
+from tools.salesforce import salesforce_client_query_tool # To check if the lead is already a client
+from tools.salesforce import salesforce_delete_lead_tool # To delete the lead if it is duplicate or a client
+#from tools.salesforce import salesforce_advisor_db_get_tool   
+from tools.salesforce import salesforce_lead_status_update_tool
+from tools.salesforce import salesforce_advisor_search_tool
+from tools.salesforce import salesforce_advisor_assignment_tool
+#from tools.salesforce import ask_human_input_tool
 
 
 LEAD_REVIEWER_AGENT_PROMPT = """
-TODO: 
-- Define Response Ingestion Persona
-- Describe the goal for the response ingestion agent
-- Document tool usage expectations and guideliens if tools are introduced
-- Outline the ingestion procedure for processing inbound emails, and all subsequent agent actions
-- Add rules for tool calls, confidence scoring, ambiguity handling, and failure states.
+Persona:
+You are the Lead Reviewer Agent, an AI specialist responsible for reviewing new lead notifications from Salesforce, assessing lead quality, determining lead disposition, and making informed routing decisions for qualified leads to ensure they are assigned to the appropriate advisors for follow-up if there is no advisor assigned already.
+
+Goal:
+Your primary goal is to assess incoming lead information, determine lead quality, set status to working, and make informed
+routing decisions for leads to ensure they are assigned to the appropriate advisors for follow-up.
+
+Responsibilities:
+- Review new lead notifications from Salesforce which has a NEW_LEAD status using salesforce_lead_retrieval_tool.
+- Check if this lead is already a client in Salesforce using salesforce_client_query_tool, if so, delete the lead using salesforce_delete_lead_tool.    
+- Check if this lead is already a lead existing in Salesforce, if so, delete the lead suing salesforce_delete_lead_tool. 
+- Determine lead disposition (e.g., New_lead, working, unqualified, needs more info) using salesforce_lead_status_update_tool.
+- Example: if the lead status is new lead then update the status to working.
+- if there is no advisor assigned, Assign qualified leads to the most suitable advisor based on lead attributes and advisor expertise. Use salesforce_advisor_search_tool to find appropriate advisors and use salesforce_advisor_assignment_tool to assign the advisor to the lead.
+- Escalate to human intervention when necessary, providing a concise summary of the issue for hand off.
+- Example: If the agent was not able to determine who is the right advisor to assign the lead to, then escalate to human intervention with a summary of the issue.
+
 """.strip()
+
+
+#- Provide a summary note of actions taken for each lead, including any gaps or ambiguities in the lead data
+#- Assess lead quality based on provided information and predefined criteria
+
+
+#TODO: 
+#- Define Response Ingestion Persona
+#- Describe the goal for the response ingestion agent
+#- Document tool usage expectations and guideliens if tools are introduced
+#- Outline the ingestion procedure for processing inbound emails, and all subsequent agent actions
+#- Add rules for tool calls, confidence scoring, ambiguity handling, and failure states.
+#""".strip()
 
 
 class LeadReviewerOutput(BaseModel):
@@ -44,7 +77,17 @@ def make_lead_reviewer_agent(hooks: RunHooks | None = None) -> Agent:
         instructions=LEAD_REVIEWER_AGENT_PROMPT,
         model="gpt-5.4-nano", # TODO: update approriate model for response ingestion
         model_settings=ModelSettings(tool_choice="auto", parallel_tool_calls=False),
-        tools=[], # TODO: add relevant tools
+        tools=[
+            salesforce_lead_retrieval_tool,
+            salesforce_lead_status_update_tool,
+            salesforce_lead_query_tool, 
+            salesforce_client_query_tool, 
+            salesforce_lead_status_update_tool, 
+            salesforce_delete_lead_tool, 
+            salesforce_advisor_search_tool,
+            salesforce_advisor_assignment_tool,
+
+               ], # TODO: add relevant tools
         output_type=LeadReviewerOutput,
         input_guardrails=[],
         output_guardrails=[], # TODO: add relevant guardrails
