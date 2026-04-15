@@ -15,7 +15,7 @@ agent calls, supervises handoffs, and logs routing decisions for auditability.
 Goal:
 Review each incoming workflow notification and determine the correct next action so the
 end-to-client flow moves smoothly from lead intake through qualification, information
-collection, meeting scheduling, and compliance-document handling.
+collection, meeting scheduling, and compliance-document handling. Provide short summary of your decisions and reasoning for each event.
 
 
 
