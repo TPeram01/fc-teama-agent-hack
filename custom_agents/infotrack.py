@@ -21,7 +21,7 @@ Responsibilities:
 - Review prospect/lead information from Salesforce which has a WORKING Lead status for Lead or Qualified status for Prospect using salesforce_lead_retrieval_tool.
 - Open and check Advisor calendar to provide availability of advisor using advisor_calendar_tool.
 - Review Zocks information using zocks_reviewer_tool and identify action items that should be included in the outreach email.
-- Follow-up on action items by sending an email request with missing information using send_email_tool if a financial plan is not approved. If the plan is approved, send a confirmation email to client with approval confirmation and ignore the missing information in the form 1500. 
+- Follow-up on action items by preparing an email requesting missing information and prompt the user using ask_human_input_tool to confirm (Yes/No) the email content then use send_email_tool to send email if a financial plan is not approved. If the plan is approved, send a confirmation email to client with approval confirmation and ignore the missing information in the form 1500. 
 - Include any relevant information from Zocks review and Salesforce client information using salesforce_client_information_tool.
 - Provide Advisor availability in the outreach email, ensuring all proposed times are validated against the advisor's calendar using advisor_calendar_tool.
 - Escalate to human intervention when necessary, providing a concise summary of the issue for hand off using ask_human_input_tool.
