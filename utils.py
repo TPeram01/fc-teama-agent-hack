@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 from pathlib import Path
+from dataclasses import asdict, is_dataclass
 from agents import (
     RunHooks,
     RunContextWrapper,
@@ -11,7 +12,7 @@ from agents import (
     get_current_trace,
 )
 from typing import Any, Final, Literal, Iterable, Annotated, Mapping
-from datetime import datetime
+from datetime import date, datetime
 from pydantic import BaseModel, Field, ConfigDict, computed_field
 from dataclasses import dataclass
 from agents.tracing import set_trace_processors, TracingProcessor
@@ -324,7 +325,13 @@ class TelemetryRunHook(RunHooks):
         self, context: RunContextWrapper, agent: Agent, tool: Tool, result: Any
     ) -> None:
         """Called when a tool completes execution."""
-        await self._log_event("tool_end", agent_name=agent.name, tool_name=tool.name)
+        self._write_trace_snapshot()
+        await self._log_event(
+            "tool_end",
+            agent_name=agent.name,
+            tool_name=tool.name,
+            tool_output=_serialize_event_payload(result),
+        )
 
     async def on_handoff(
         self, context: RunContextWrapper, from_agent: Agent, to_agent: Agent
@@ -410,6 +417,34 @@ def setup_run_hooks(
     run_hooks = TelemetryRunHook(verbose, logger, trace_processor=trace_processor, event_queue=event_queue)
 
     return run_hooks
+
+
+def _serialize_event_payload(value: Any) -> Any:
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+
+    if isinstance(value, (datetime, date)):
+        return value.isoformat()
+
+    if isinstance(value, Path):
+        return str(value)
+
+    if hasattr(value, "model_dump"):
+        return _serialize_event_payload(value.model_dump(mode="json"))
+
+    if is_dataclass(value):
+        return _serialize_event_payload(asdict(value))
+
+    if isinstance(value, Mapping):
+        return {
+            str(key): _serialize_event_payload(item)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, (list, tuple, set)):
+        return [_serialize_event_payload(item) for item in value]
+
+    return str(value)
 
 def setup_tracing() -> tuple[str, str]:
     """Setup orchestration tracing and trace_id, and trace_url.
@@ -719,6 +754,42 @@ class CostSummary:
         return self.total_agent_cost + self.total_tool_cost
 
 
+class ExecutionReportAgent(BaseModel):
+    """Agent-level execution details for UI and API consumers."""
+
+    name: Annotated[str, Field(...)]
+    model: Annotated[str | None, Field(default=None)]
+    total_tokens: Annotated[int, Field(default=0, ge=0)]
+    requests: Annotated[int, Field(default=0, ge=0)]
+    input_tokens: Annotated[int, Field(default=0, ge=0)]
+    output_tokens: Annotated[int, Field(default=0, ge=0)]
+    cached_tokens: Annotated[int, Field(default=0, ge=0)]
+    reasoning_tokens: Annotated[int, Field(default=0, ge=0)]
+    cost: Annotated[float, Field(default=0.0, ge=0)]
+
+
+class ExecutionReportTool(BaseModel):
+    """Tool usage details for UI and API consumers."""
+
+    name: Annotated[str, Field(...)]
+    calls: Annotated[int, Field(default=0, ge=0)]
+    cost: Annotated[float, Field(default=0.0, ge=0)]
+
+
+class ExecutionReport(BaseModel):
+    """Structured execution report derived from telemetry."""
+
+    started_at: Annotated[datetime, Field()]
+    duration_seconds: Annotated[float, Field(default=0.0, ge=0)]
+    agent_count: Annotated[int, Field(default=0, ge=0)]
+    agents: Annotated[list[ExecutionReportAgent], Field(default_factory=list)]
+    tools: Annotated[list[ExecutionReportTool], Field(default_factory=list)]
+    totals: Annotated[TelemetryTotals, Field()]
+    total_agent_cost: Annotated[float, Field(default=0.0, ge=0)]
+    total_tool_cost: Annotated[float, Field(default=0.0, ge=0)]
+    total_cost: Annotated[float, Field(default=0.0, ge=0)]
+
+
 def _normalize_model_name(model_name: str | None) -> str:
     """Return a supported model name, defaulting when necessary."""
     if not model_name:
@@ -792,6 +863,46 @@ def summarize_costs(summary: TelemetrySummary) -> CostSummary:
         tool_costs=tool_costs,
         total_agent_cost=total_agent_cost,
         total_tool_cost=total_tool_cost,
+    )
+
+
+def build_execution_report(summary: TelemetrySummary) -> ExecutionReport:
+    """Return a structured execution report for API and UI rendering."""
+
+    cost_summary = summarize_costs(summary)
+    agents = [
+        ExecutionReportAgent(
+            name=telemetry.name,
+            model=telemetry.model,
+            total_tokens=telemetry.token_usage.input + telemetry.token_usage.output,
+            requests=telemetry.token_usage.requests,
+            input_tokens=telemetry.token_usage.input,
+            output_tokens=telemetry.token_usage.output,
+            cached_tokens=telemetry.token_usage.cached,
+            reasoning_tokens=telemetry.token_usage.reasoning,
+            cost=cost_summary.agent_costs.get(telemetry.name, 0.0),
+        )
+        for telemetry in summary.agents
+    ]
+    tools = [
+        ExecutionReportTool(
+            name=tool_name,
+            calls=count,
+            cost=cost_summary.tool_costs.get(tool_name, 0.0),
+        )
+        for tool_name, count in sorted(summary.tool_usage.items())
+    ]
+
+    return ExecutionReport(
+        started_at=summary.started_at,
+        duration_seconds=summary.duration_seconds,
+        agent_count=len(summary.agents),
+        agents=agents,
+        tools=tools,
+        totals=summary.totals,
+        total_agent_cost=cost_summary.total_agent_cost,
+        total_tool_cost=cost_summary.total_tool_cost,
+        total_cost=cost_summary.total_cost,
     )
 
 

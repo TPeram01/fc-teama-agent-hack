@@ -2,7 +2,9 @@
 
 ## Project Structure & Module Organization
 - `main.py` is the primary CLI entrypoint. It loads `.env`, restores top-level runtime JSON state from `*_original.json`, dispatches payloads to `run_manager`, and supports `--payload`, `--scenario`, `--list-scenarios`, and `--save-runtime-data`.
-- `api.py` exposes FastAPI endpoints (`GET /`, `POST /agents/run`) around the same manager workflow used by the CLI. Because it imports `main.py`, starting the API also restores top-level runtime JSON state.
+- `api.py` exposes the FastAPI control plane for health checks, scenario launches, live run/event inspection, HITL approval callbacks, runtime resets, and the compatibility `POST /agents/run` path.
+- `workflow/runner.py`, `workflow/runtime.py`, `workflow/context.py`, and `workflow/timeline.py` contain the shared execution logic used by the CLI, FastAPI control plane, SSE event streaming, browser-backed human approvals, and enriched timeline rendering. `workflow_context.py` remains as a thin compatibility shim for existing tool imports.
+- `frontend/` contains the Next.js dashboard that launches scenarios, streams events, and resolves human-in-the-loop approvals.
 - `custom_agents/manager.py` is the top-level orchestrator. It routes events to the current specialist agents in `custom_agents/lead_reviewer.py`, `custom_agents/response_ingestion.py`, and `custom_agents/infotrack.py`.
 - `tools/` contains the callable agent tools for the mocked Salesforce, email, Laserfiche, Zocks, OCR/document-processing, calculator, and HITL flows. Re-export shared tool entrypoints from `tools/__init__.py`.
 - `guardrails/` contains agent and tool guardrails, including confidence, moderation, prompt-injection, on-topic, PII, and document-classification protections.
@@ -18,6 +20,7 @@
 - `.env` is loaded in `main.py` and by guardrail/eval modules. Set `OPENAI_API_KEY` before running the CLI, API, or eval flows.
 - `data/scenarios.json` is active and is the source of truth for runnable CLI scenarios and supported payload types.
 - Top-level runtime JSON files in `data/` are intentionally mutable during runs and are reset from `*_original.json` baselines at workflow startup.
+- The browser control plane should treat runtime JSON state as single-writer demo state; avoid concurrent run execution unless the backing storage model is changed.
 - Runtime trace bundles are written under `traces_logs/` when `setup_run_hooks(save_traces=True)` is enabled.
 - Keep secrets, local trace dumps, and generated eval datasets out of git unless they are intentionally versioned.
 
@@ -38,7 +41,7 @@
 
 ## Testing Guidelines
 - The repo currently includes a `unittest`-style test module in `tests.py`.
-- Run the current test suite with `uv run python -m unittest tests.py`.
+- Run the current test suite with `uv run tests.py`.
 - No coverage thresholds are configured yet.
 - If you add tests, prefer `pytest` under `tests/` with names like `test_*.py`, but do not break the existing `tests.py` workflow unless you are intentionally migrating it.
 

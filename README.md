@@ -39,7 +39,8 @@ The external systems are mocked locally through JSON files under `data/`, so the
 Core components:
 
 - `main.py`: CLI entrypoint for scenario runs and custom payload execution.
-- `api.py`: FastAPI wrapper around the same `run_manager()` path used by the CLI.
+- `api.py`: FastAPI control plane for scenario execution, live event streaming, and HITL approvals.
+- `frontend/`: Next.js dashboard for launching scenarios, watching event streams, and resolving approvals.
 - `custom_agents/manager.py`: top-level router that decides which specialist agent to invoke.
 - `custom_agents/lead_reviewer.py`: qualifies new leads, screens duplicates/existing clients, and assigns advisors.
 - `custom_agents/response_ingestion.py`: processes inbound emails, updates Salesforce, schedules meetings, and routes attachments.
@@ -57,6 +58,7 @@ Core components:
 
 - Python `3.14`
 - `uv`
+- Node.js and npm
 - `OPENAI_API_KEY` in `.env`
 
 Example `.env`:
@@ -81,7 +83,7 @@ uv sync
 uv run scripts/reset_runtime_data.py
 ```
 
-Note: `main.py` restores the top-level runtime JSON files in `data/` from their `*_original.json` copies on startup. Because `api.py` imports `main.py`, starting the API also resets that runtime state.
+Note: the CLI restores the top-level runtime JSON files in `data/` from their `*_original.json` copies at the start of each scenario or payload run. The browser control plane can also reset runtime state per run and via a dedicated API endpoint.
 
 ## Running The Workflow
 
@@ -139,6 +141,14 @@ Interactive docs:
 Endpoints:
 
 - `GET /`: health check
+- `GET /scenarios`: list runnable scenarios for the frontend
+- `GET /runs`: list known asynchronous runs
+- `GET /runs/{run_id}`: inspect current run state, approvals, and event history
+- `GET /runs/{run_id}/events`: stream historical and live events via SSE
+- `POST /runs/scenarios/{scenario_id}`: start a full scenario run
+- `POST /runs/payload`: start a single-payload asynchronous run
+- `POST /runs/{run_id}/approvals/{approval_id}`: resolve a pending HITL approval
+- `POST /runtime/reset`: restore the mutable JSON runtime state
 - `POST /agents/run`: execute the workflow for a single payload
 
 Example request:
@@ -155,7 +165,46 @@ curl -X POST "http://localhost:8000/agents/run" \
   }'
 ```
 
-The API response includes the structured manager output along with the resolved `trace_id` and `session_id`.
+The synchronous `/agents/run` response includes the structured manager output along with the resolved `trace_id` and `session_id`.
+
+## Frontend
+
+The repo now includes a Next.js control plane in `frontend/` with:
+
+- scenario launch cards backed by `GET /scenarios`
+- a live event timeline backed by `GET /runs/{run_id}/events`
+- run detail panels backed by `GET /runs/{run_id}`
+- a browser-driven HITL approval composer backed by `POST /runs/{run_id}/approvals/{approval_id}`
+
+Install frontend dependencies:
+
+```bash
+cd frontend
+npm install
+```
+
+Start the frontend by itself:
+
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend expects the FastAPI API at `http://127.0.0.1:8000` by default. Override with `NEXT_PUBLIC_API_BASE_URL` if needed.
+
+## Full Stack Dev Launcher
+
+Start FastAPI and the Next.js frontend together:
+
+```bash
+uv run scripts/dev_stack.py --install-frontend
+```
+
+After the first install, future launches can use:
+
+```bash
+uv run scripts/dev_stack.py
+```
 
 ## Data and Runtime State
 
@@ -185,7 +234,7 @@ Trace files are written to `traces_logs/trace_*.json`.
 Run evals:
 
 ```bash
-uv run python evals.py
+uv run evals.py
 ```
 
 The eval job (`evals/eval_agents.py`) converts trace files into a JSONL dataset and launches an OpenAI eval run.
@@ -197,7 +246,7 @@ This repo currently includes a `unittest`-style test module in `tests.py`.
 Run it with:
 
 ```bash
-uv run python -m unittest tests.py
+uv run tests.py
 ```
 
 ## Main Loop: `main.py`
@@ -257,5 +306,5 @@ flowchart TB
 Flatten a PDF to an image-based PDF so the model must use OCR to extract text (rather than reading embedded text directly from the PDF):
 
 ```bash
-uv run python pdf_to_image_only_pdf.py --input [input_filepath] --output [output_filepath]
+uv run scripts/pdf_to_image_only_pdf.py --input [input_filepath] --output [output_filepath]
 ```

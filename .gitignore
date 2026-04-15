@@ -17,7 +17,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -217,3 +217,5 @@ data/excels/
 
 .pycache-check
 .uv-cache
+frontend/.next/
+frontend/node_modules/

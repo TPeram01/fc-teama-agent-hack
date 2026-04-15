@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 import tempfile
 import unittest
@@ -24,9 +25,11 @@ from guardrails.tool_guardrails import (
     email_prompt_injection_guardrail,
     pii_filter,
 )
+import tools.document_processor as document_processor_module
 from tools.document_processor import LoadedAttachment, document_processor_tool
 from tools.emails import EmailReadResult, email_read_tool, send_email_tool
-
+from tools.laserfiche import upload_laserfiche_attachment
+from scripts.path_utils import repo_relative_path, resolve_repo_path
 from tools.salesforce import (
     apply_salesforce_client_input,
     get_salesforce_advisor_calendar,
@@ -410,6 +413,27 @@ class SalesforceClientsDbTests(unittest.TestCase):
                 "data/cache/Jordan_Lee_Account_Summary.json",
                 "data/sample_input/Jordan_Lee_Account_Summary.pdf",
             ],
+        )
+
+    def test_upload_salesforce_documents_normalizes_absolute_paths_to_repo_relative(self) -> None:
+        absolute_path = (
+            ROOT_DIR / "data" / "sample_input" / "Jordan_Lee_Account_Summary.pdf"
+        ).resolve()
+
+        result = upload_salesforce_documents(
+            "UID-2026-0101",
+            str(absolute_path),
+            db_path=self.leads_db_path,
+        )
+        raw_payload = json.loads(self.leads_db_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            result.uploaded_documents,
+            ["data/sample_input/Jordan_Lee_Account_Summary.pdf"],
+        )
+        self.assertEqual(
+            raw_payload["UID-2026-0101"]["document"],
+            ["data/sample_input/Jordan_Lee_Account_Summary.pdf"],
         )
 
     def test_get_salesforce_advisor_returns_expected_record_for_id(self) -> None:
@@ -812,6 +836,85 @@ class AttachmentGuardrailTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("document_compliance_confidence_guardrail", output_guardrail_names)
 
 
+class MockPathNormalizationTests(unittest.TestCase):
+    def test_resolve_repo_path_uses_repo_root_instead_of_cwd(self) -> None:
+        original_cwd = Path.cwd()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            os.chdir(temp_dir)
+            try:
+                resolved = resolve_repo_path("data/sample_input/Jordan_Lee_Account_Summary.pdf")
+            finally:
+                os.chdir(original_cwd)
+
+        self.assertEqual(
+            resolved,
+            ROOT_DIR / "data" / "sample_input" / "Jordan_Lee_Account_Summary.pdf",
+        )
+
+    def test_repo_relative_path_converts_repo_absolute_path(self) -> None:
+        absolute_path = ROOT_DIR / "data" / "sample_input" / "Jordan_Lee_Account_Summary.pdf"
+
+        self.assertEqual(
+            repo_relative_path(absolute_path),
+            "data/sample_input/Jordan_Lee_Account_Summary.pdf",
+        )
+
+    def test_upload_laserfiche_attachment_normalizes_absolute_paths_to_repo_relative(self) -> None:
+        absolute_path = (
+            ROOT_DIR / "data" / "sample_input" / "Jordan_Lee_Account_Summary.pdf"
+        ).resolve()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            db_path = Path(temp_dir) / "laserfiche.json"
+            db_path.write_text('{"metadata": {}}', encoding="utf-8")
+
+            result = upload_laserfiche_attachment(
+                "UID-2026-0101",
+                str(absolute_path),
+                db_path=db_path,
+            )
+            payload = json.loads(db_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            result.attachment_path,
+            "data/sample_input/Jordan_Lee_Account_Summary.pdf",
+        )
+        self.assertEqual(
+            payload["UID-2026-0101"],
+            ["data/sample_input/Jordan_Lee_Account_Summary.pdf"],
+        )
+
+    def test_document_processor_cache_persists_repo_relative_paths(self) -> None:
+        original_cache_dir = document_processor_module.CACHE_DIR
+        with tempfile.TemporaryDirectory() as temp_dir:
+            document_processor_module.CACHE_DIR = Path(temp_dir)
+            try:
+                document_processor_module._write_cache(
+                    ROOT_DIR / "data" / "sample_input" / "Jordan_Lee_Account_Summary.pdf",
+                    "pdf",
+                    "Mock content",
+                    False,
+                    0.91,
+                    "Mock justification",
+                )
+                payload = json.loads(
+                    (Path(temp_dir) / "Jordan_Lee_Account_Summary.json").read_text(
+                        encoding="utf-8"
+                    )
+                )
+            finally:
+                document_processor_module.CACHE_DIR = original_cache_dir
+
+        self.assertEqual(
+            payload["path"],
+            "data/sample_input/Jordan_Lee_Account_Summary.pdf",
+        )
+        self.assertEqual(
+            payload["result"]["path"],
+            "data/sample_input/Jordan_Lee_Account_Summary.pdf",
+        )
+
+
 class ConfidenceGuardrailTests(unittest.IsolatedAsyncioTestCase):
     async def test_analysis_confidence_guardrail_rejects_low_confidence(self) -> None:
         result = await analysis_confidence_guardrail.guardrail_function(
@@ -862,3 +965,7 @@ class ManagerPromptRoutingTests(unittest.TestCase):
             INFOTRACK_TOOL_PROMPT,
         )
         self.assertIn("UID was deleted or no longer exists", INFOTRACK_TOOL_PROMPT)
+
+
+if __name__ == "__main__":
+    unittest.main()
