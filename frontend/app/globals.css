@@ -1,0 +1,57 @@
+:root {
+  --bg: #f4f6fa;
+  --bg-strong: #e9edf5;
+  --surface: rgba(255, 255, 255, 0.98);
+  --surface-strong: rgba(248, 250, 254, 0.98);
+  --line: rgba(89, 103, 128, 0.14);
+  --line-strong: rgba(89, 103, 128, 0.24);
+  --ink: #172033;
+  --ink-soft: rgba(23, 32, 51, 0.72);
+  --ink-subtle: rgba(23, 32, 51, 0.48);
+  --accent: #3c6df0;
+  --accent-strong: #2a54be;
+  --danger: #ad4046;
+  --warning: #bc761e;
+  --shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(60, 109, 240, 0.08), transparent 24%),
+    radial-gradient(circle at top right, rgba(113, 131, 165, 0.08), transparent 22%),
+    linear-gradient(180deg, #fafbfe 0%, #f2f5fa 100%);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-sans), sans-serif;
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  font-family: var(--font-mono), monospace;
+}
