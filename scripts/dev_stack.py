@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import shutil
 import subprocess
 import threading
 import time
@@ -9,6 +11,31 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = ROOT_DIR / "frontend"
+
+
+def _resolve_command(command: str) -> str:
+    candidates = [command]
+    if os.name == "nt" and Path(command).suffix == "":
+        candidates = [f"{command}.cmd", f"{command}.exe", f"{command}.bat", command]
+
+    for candidate in candidates:
+        resolved = shutil.which(candidate)
+        if resolved is not None:
+            return resolved
+
+    if command == "npm":
+        raise SystemExit(
+            "npm was not found on PATH. Install Node.js and npm, then restart your shell."
+        )
+
+    raise SystemExit(f"{command} was not found on PATH.")
+
+
+def _prepare_command(command: list[str]) -> list[str]:
+    if not command:
+        raise ValueError("Command cannot be empty.")
+
+    return [_resolve_command(command[0]), *command[1:]]
 
 
 def _stream_output(prefix: str, pipe) -> None:
@@ -21,8 +48,9 @@ def _spawn_process(
     command: list[str],
     cwd: Path,
 ) -> subprocess.Popen[str]:
+    prepared_command = _prepare_command(command)
     process = subprocess.Popen(
-        command,
+        prepared_command,
         cwd=cwd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
@@ -78,7 +106,7 @@ def main() -> None:
 
     if args.install_frontend:
         subprocess.run(
-            ["npm", "install"],
+            _prepare_command(["npm", "install"]),
             cwd=FRONTEND_DIR,
             check=True,
         )

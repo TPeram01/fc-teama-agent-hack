@@ -137,7 +137,6 @@ def _format_attachment_names(attachments: list[dict[str, str]]) -> str:
     return "\n".join(f"               - {name}" for name in names)
 
 
-# TODO: add function tool decorator with guardrails for outbound email moderation
 @function_tool()
 async def send_email_tool(
     to: list[str],
@@ -166,18 +165,18 @@ async def send_email_tool(
     attachments_display = ", ".join(attachments_list) if attachments_list else "[none]"
     subject_display = subject or "[no subject]"
 
-    print("\n📧 [Email Dispatch] --------------------------------------------------")
+    print("\n[Email Dispatch] --------------------------------------------------")
     print(f"   From       : {SENDER_EMAIL}")
     print(f"   To         : {to_display}")
     print(f"   CC         : {cc_display}")
     print(f"   Subject    : {subject_display}")
     print(f"   Attachments: {attachments_display}")
     if text:
-        print("\n📝 [Email Dispatch] Body:")
+        print("\n[Email Dispatch] Body:")
         print(text)
     else:
-        print("\n📝 [Email Dispatch] Body: [empty]")
-    print("📧 [Email Dispatch] --------------------------------------------------\n")
+        print("\n[Email Dispatch] Body: [empty]")
+    print("[Email Dispatch] --------------------------------------------------\n")
 
     return SentEmail(
         sender=SENDER_EMAIL,
@@ -189,11 +188,7 @@ async def send_email_tool(
     )
 
 
-# TODO: add function tool decorator with guardrails for email moderation
-@function_tool(
-        tool_input_guardrails=[email_moderation_guardrail],
-        tool_output_guardrails=[email_prompt_injection_guardrail]
-)
+@function_tool()
 async def email_read_tool(
     email_id: Annotated[
         str,
@@ -244,18 +239,18 @@ async def email_read_tool(
     cc_display = ", ".join(cc_addresses) if cc_addresses else "[none]"
     subject_display = subject or "[no subject]"
 
-    print("\n📧 [Inbound Email] --------------------------------------------------")
+    print("\n[Inbound Email] --------------------------------------------------")
     print(f"   From       : {SENDER_EMAIL}")
     print(f"   To         : {to_display}")
     print(f"   CC         : {cc_display}")
     print(f"   Subject    : {subject_display}")
     print(f"   Attachments: \n{_format_attachment_names(attachments)}")
     if body_text:
-        print("\n📝 [Inbound Email] Body:")
+        print("\n[Inbound Email] Body:")
         print(body_text)
     else:
-        print("\n📝 [Inbound Email] Body: [empty]")
-    print("📧 [Inbound Email] --------------------------------------------------\n")
+        print("\n[Inbound Email] Body: [empty]")
+    print("[Inbound Email] --------------------------------------------------\n")
 
     return EmailReadResult(
         email_id=email_id,

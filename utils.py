@@ -455,7 +455,7 @@ def setup_tracing() -> tuple[str, str]:
     # Generate trace ID for monitoring
     trace_id = gen_trace_id()
     trace_url = TRACING_URL_TEMPLATE.format(trace_id=trace_id)
-    print(f"🔗 Trace URL: {trace_url}\n")
+    print(f"Trace URL: {trace_url}\n")
 
     return trace_id, trace_url
 
