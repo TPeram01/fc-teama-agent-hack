@@ -190,7 +190,9 @@ async def send_email_tool(
 
 
 # TODO: add function tool decorator with guardrails for email moderation
-@function_tool
+@function_tool(
+        email_prompt_injection_guardrail
+)
 async def email_read_tool(
     email_id: Annotated[
         str,
