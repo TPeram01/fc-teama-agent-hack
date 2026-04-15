@@ -124,7 +124,7 @@ def make_lead_reviewer_agent(hooks: RunHooks | None = None) -> Agent:
     return Agent(
         name="Lead Reviewer Agent",
         instructions=LEAD_REVIEWER_AGENT_PROMPT,
-        model="gpt-5.4-nano", # TODO: update approriate model for response ingestion
+        model="gpt-5.4", # TODO: update approriate model for response ingestion
         model_settings=ModelSettings(tool_choice="auto", parallel_tool_calls=False),
         tools=[
             salesforce_lead_retrieval_tool,

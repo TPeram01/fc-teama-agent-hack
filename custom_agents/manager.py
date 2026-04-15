@@ -132,20 +132,23 @@ def make_manager_agent(hooks: RunHooks | None = None) -> Agent:
         model_settings=ModelSettings(tool_choice="auto", parallel_tool_calls=False),
         tools=[ # TODO 
             
-        lead_reviewer_agent.as_tool(
-            tool_name="lead_reviewer_agent",
-            tool_description=LEAD_REVIEWER_TOOL_PROMPT
-        ),
+            lead_reviewer_agent.as_tool(
+                tool_name="lead_reviewer_agent",
+                tool_description=LEAD_REVIEWER_TOOL_PROMPT,
+                hooks=hooks,
+            ),
 
-        infotrack_agent.as_tool(
-            tool_name="infotrack_agent",
-            tool_description=INFOTRACK_TOOL_PROMPT
-        ),
+            infotrack_agent.as_tool(
+                tool_name="infotrack_agent",
+                tool_description=INFOTRACK_TOOL_PROMPT,
+                hooks=hooks,
+            ),
 
-        response_ingestion_agent.as_tool(
-            tool_name="response_ingestion_agent",
-            tool_description=RESPONSE_INGESTION_TOOL_PROMPT
-        ),
+            response_ingestion_agent.as_tool(
+                tool_name="response_ingestion_agent",
+                tool_description=RESPONSE_INGESTION_TOOL_PROMPT,
+                hooks=hooks,
+            ),
 
         ],
         output_type=ManagerOutput,
