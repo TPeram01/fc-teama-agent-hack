@@ -297,7 +297,7 @@ async def email_moderation_guardrail(data: Any) -> ToolGuardrailFunctionOutput:
         input=str(data),
     )
     result = mod.results[0]
-    tripped = False; # TODO: implement tripped boolean (guardrail will raise when True)
+    tripped = bool(result.flagged); # TODO: implement tripped boolean (guardrail will raise when True)
     
     with guardrail_span("email_moderation_guardrail", triggered=tripped):
 

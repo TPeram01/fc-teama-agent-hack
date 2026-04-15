@@ -191,7 +191,7 @@ async def send_email_tool(
 
 # TODO: add function tool decorator with guardrails for email moderation
 @function_tool(
-        tool_input_guardrails=[],
+        tool_input_guardrails=[email_moderation_guardrail],
         tool_output_guardrails=[email_prompt_injection_guardrail]
 )
 async def email_read_tool(
